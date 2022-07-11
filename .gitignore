@@ -1,4 +1,5 @@
 __pycache__/
+*.data
 
 *.py[cod]
 *$py.class
@@ -105,7 +106,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.en-v
+.env
 .venv
 env/
 venv/

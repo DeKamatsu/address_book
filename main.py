@@ -10,26 +10,40 @@ import abook
 import contact
 
 # bookname = input('Введите название адресной книги: ')
-bookname = "book1"
-ab = abook.ABook("book1")
+
 
 # отдельно - ввод нового пользователя с проверкой (по необходимости) пустоты имени и формата номера
 
-contacts = [
-    ("Иван", "Иванов", +3205-25-38, "Примечание"),
-    ("Ив", "Петров", 32357938, 1564),
-    ("Ivan", "", '32 (05) 25 19'),
-    ("", "Ива", '+32 (05) 25-38', "")
-]
+# testing books abilities
 
-for contact in contacts:
-    ab.add(contact)
+bookname = "book1"
+ab = abook.ABook("book1")
+
+# data = [
+#     ["Иван", "Иванов", +3205-25-38, "Примечание", ],
+#     ["Ив", "Петров", 32357938, 1564, ],
+#     ["Сема", "", '32 (05) 25 19', ''],
+#     ["", "Степанов", '+32 (05) 25-38', "-", ],
+#     ("", "Женин", '+32 (05) 25-38', "", ),
+# ]
+# for d in data:
+#     ab.add(contact.Contact(d))
 
 ab.show_all()
 
-ab.delete()
-
+# ab.add("Serg", "Sergeev", 123, "")
+ab.add()
+ab.add()
+ab.add()
+ab.add()
+ab.delete(1)
+# ab.delete("Denis")
+# ab.show("Mila")
+# ab.modify("2")
+# ab.delete("1")
 ab.show_all()
+
+
 
 
 
