@@ -25,48 +25,18 @@ class Contact:
             last_name = data_set[1]
             phone = self.clear_number(data_set[2])
             comment = data_set[3]
+        if first_name == '' and last_name == '':
+            raise ValueError
         self.first_name = first_name
         self.last_name = last_name
         self.phone = self.clear_number(phone)
         self.comment = comment
-        if first_name == '' and last_name == '':
-            raise ValueError
 
     def __str__(self):
         """
         2) Определяет формат вывода контакта в виде текстовой строки.
         """
         return f"имя: {self.first_name}, фамилия: {self.last_name}, телефон: {self.phone}, примечание: {self.comment}"
-
-    def __eq__(self, other):
-        """Определяет поведение оператора равенства, ==."""
-        return self.first_name == other.first_name and \
-            self.last_name == other.last_name and \
-            self.phone == other.phone and \
-            self.comment == other.comment
-
-    def __ne__(self, other):
-        """Определяет поведение оператора неравенства, !=."""
-        return self.first_name != other.first_name or \
-            self.last_name != other.last_name or \
-            self.phone != other.phone or \
-            self.comment != other.comment
-
-    def __lt__(self, other):
-        """Определяет поведение оператора меньше, <."""
-        return self.first_name < other.first_name
-
-    def __gt__(self, other):
-        """Определяет поведение оператора больше, >."""
-        return self.first_name > other.first_name
-
-    def __le__(self, other):
-        """Определяет поведение оператора меньше или равно, <=."""
-        return self.first_name <= other.first_name
-
-    def __ge__(self, other):
-        """Определяет поведение оператора больше или равно, >=."""
-        return self.first_name >= other.first_name
 
     def is_contain(self, txt):
         """

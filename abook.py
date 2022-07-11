@@ -1,5 +1,4 @@
 import pickle
-import contact
 
 
 class ABook:
@@ -35,43 +34,34 @@ class ABook:
         try:
             file = open(self.file_name, 'r+b')
             self.address_book = pickle.load(file)
-            print(f"Адресная книга {self.file_name}.data открыта.")
+            print(f"Адресная книга {self.file_name} открыта.")
         except FileNotFoundError:
             file = open(self.file_name, 'wb')
             pickle.dump(self.address_book, file)
-            print(f"Адресная книга {self.file_name}.data создана.")
+            print(f"Адресная книга {self.file_name} создана.")
 
     def __del__(self):
         """
-        2) Автоматически сохраняет текущую адресную книгу в файл 'file_name' (расширение .data) в каталоге программы.
+        2) Автоматически сохраняет текущую адресную книгу в файл 'file_name'.data в каталоге программы.
         """
         file = open(self.file_name, 'wb')
         pickle.dump(self.address_book, file)
-        print(f"Завершение работы: Адресная книга сохранена в файл {self.file_name}.")
+        print(f"Адресная книга сохранена в файл {self.file_name}.")
 
-    def add(self):  # , cont):
+    def add(self, cont):
         """
-        3) Добавляет в адресную книгу новый объект 'Contact', если такой объект отсутствует в книге и отвечает требованиям.
+        3) Добавляет в адресную книгу новый объект 'Contact', если такой объект отсутствует в книге.
         :return:
         информация об успешности добавления в виде True или False
         """
-        first_name = input("Введите имя: ")
-        last_name = input("Введите фамилию: ")
-        phone = input("Введите телефон: ")
-        comment = input("Введите примечание: ")
-        try:
-            cont = contact.Contact(first_name, last_name, phone, comment)
-            if cont in self.address_book:
-                print('Такой контакт уже существует в адресной книге.')
-                return False
-            else:
-                self.address_book.append(cont)
-                print("Контакт добавлен.")
-                self.address_book.sort(key=lambda x: x.first_name)
-                return True
-        except ValueError:
-            print('Укажите корректное имя пользователя (имя или фамилия должны быть заполнены)!')
+        if cont in self.address_book:
+            print('Такой контакт уже существует.')
             return False
+        else:
+            self.address_book.append(cont)
+            print("Новый контакт добавлен.")
+            self.address_book.sort(key=lambda c: c.first_name)
+            return True
 
     def show_all(self):
         """
@@ -81,10 +71,11 @@ class ABook:
         """
         if len(self.address_book) == 0:
             print("Адресная книга пуста.")
-
         else:
+            no = 1
             for i in self.address_book:
-                print(i)
+                print(f"{no}) {i}")
+                no += 1
 
     def show(self, request):
         """
@@ -106,64 +97,32 @@ class ABook:
             print("Адресная книга пуста.")
             return False
         else:
-            contact_list = [c for c in self.address_book if c.is_contain(str(request))]
+            contact_list = [c for c in self.address_book if c.is_contain(request)]
             if len(contact_list) == 0:
                 print("Ничего не найдено.")
                 return False
             else:
                 return contact_list
 
-    def select(self, request):
+    def modify(self, cont, new_cont):
         """
-        6) Позволяет выбрать объект 'Contact', поле которого отвечает пользовательскому запросу.
-        :return:
-        Объект 'Contact' или False
-        """
-        contact_list = self.find(str(request))
-        if contact_list is not False:
-            if len(contact_list) == 1:
-                return contact_list[0]
-            else:
-                print(f"В адресной книге '{self.file_name}' найдены следующие контакты, отвечающие Вашему запросу:")
-                for i in range(0, len(contact_list)):
-                    print(f"{i + 1}) {contact_list[i]}")
-                no = 0
-                while no < 1 or no > len(contact_list):
-                    try:
-                        no = input("Введите № контакта, с которым Вы хотите продолжить работу: ")
-                        no = int(no)
-                    except:
-                        print("Попробуйте ввести номер еще раз.")
-                        no = -1
-            return contact_list[int(no) - 1]
-        else:
-            return False
-
-    def modify(self, request):
-        """
-        7) Изменяет контактные данные 'Contact'
+        7) Изменяет контактные данные 'Contact' путем замены на новый контакт
         :return:
         информация об успешности изменения в виде True или False
         """
-        cont = self.select(str(request))
-        if cont is not False:
-            if self.add():
-                self.address_book.remove(cont)
-                self.address_book.sort(key=lambda x: x.first_name)
-            else:
-                print("Что-то пошло не так, попробуйте еще раз.")
+        self.address_book.remove(cont)
+        self.address_book.append(new_cont)
+        self.address_book.sort(key=lambda c: c.first_name)
 
-    def delete(self, request):
+    def delete(self, cont):
         """
         8) Удаляет контактные данные 'Contact'
         :return:
         информация об успешности удаления в виде True или False
         """
-        cont = self.select(str(request))
-        if cont is not False:
-            conf = input(f"Контакт '{cont.first_name}' '{cont.last_name}' будет удален. Для подтверждения введите 'Y'.")
-            if conf.lower() == 'y':
-                print("Контакт удален.")
-                self.address_book.remove(cont)
-            else:
-                print("Операция отменена.")
+        conf = input(f"Контакт '{cont.first_name}' '{cont.last_name}' будет удален. Для подтверждения введите 'Y'.")
+        if conf.lower() == 'y':
+            print("Контакт удален.")
+            self.address_book.remove(cont)
+        else:
+            print("Операция отменена.")
